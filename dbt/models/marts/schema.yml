@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: dim_users
+    description: "User dimension with one row per user."
+    columns:
+      - name: user_id
+        description: "Business key of the user."
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: "Canonical email used for analysis."
+      - name: country
+        description: "Country code for geographic slicing."
+      - name: user_created_at
+        description: "User creation timestamp from source."
+
+  - name: fct_orders
+    description: "Order fact table with cleaned and conformed user references."
+    columns:
+      - name: order_id
+        description: "Business key of the order."
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: "Foreign key to user dimension."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_users')
+              field: user_id
+      - name: amount
+        description: "Order amount in USD."
+        tests:
+          - not_null
+      - name: status
+        description: "Order status restricted to approved values."
+        tests:
+          - accepted_values:
+              values: ['created', 'paid', 'shipped', 'canceled']
+      - name: created_at
+        description: "Order event timestamp."
+      - name: order_date
+        description: "Date grain for daily reporting."
+
+  - name: mart_order_metrics
+    description: "Single-row mart with top-line e-commerce metrics."
+    columns:
+      - name: total_orders
+        description: "Number of orders in fact table."
+      - name: total_revenue
+        description: "Total gross revenue from all orders."
+      - name: paid_orders
+        description: "Count of paid orders."
+      - name: canceled_orders
+        description: "Count of canceled orders."
+
+exposures:
+  - name: executive_order_dashboard
+    label: Executive Order Dashboard
+    type: dashboard
+    maturity: medium
+    description: "Executive dashboard consuming aggregated order metrics."
+    depends_on:
+      - ref('mart_order_metrics')
+    owner:
+      name: Data Platform Team
+      email: data-platform@example.com

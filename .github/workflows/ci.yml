@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches: ["dev", "qa", "master"]
+  pull_request:
+    branches: ["dev", "qa", "master"]
+
+jobs:
+  dbt-duckdb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Cache dbt packages
+        uses: actions/cache@v4
+        with:
+          path: dbt/dbt_packages
+          key: ${{ runner.os }}-dbt-packages-${{ hashFiles('dbt/packages.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-dbt-packages-
+
+      - name: Run CI pipeline
+        run: |
+          chmod +x scripts/ci.sh
+          scripts/ci.sh
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-duckdb-artifacts
+          if-no-files-found: warn
+          path: |
+            artifacts/report.md
+            artifacts/logs
+            dbt/target
+            data/warehouse.duckdb

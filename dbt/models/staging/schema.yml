@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_users
+    description: "Standardized users staged from raw ingestion tables."
+    columns:
+      - name: user_id
+        description: "User identifier after type normalization."
+      - name: email
+        description: "Lower-cased and trimmed user email."
+      - name: created_at
+        description: "Parsed user creation timestamp."
+      - name: country
+        description: "Upper-cased country code."
+
+  - name: stg_orders
+    description: "Standardized orders staged from raw ingestion tables."
+    columns:
+      - name: order_id
+        description: "Order identifier after type normalization."
+      - name: user_id
+        description: "User identifier associated to the order."
+      - name: amount
+        description: "Order amount cast to decimal(18,2)."
+      - name: status
+        description: "Lower-cased order lifecycle status."
+      - name: created_at
+        description: "Parsed order creation timestamp."

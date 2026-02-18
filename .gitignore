@@ -1,0 +1,14 @@
+# Python / dbt
+dbt/target/
+dbt/dbt_packages/
+__pycache__/
+*.pyc
+
+# Local warehouse and generated raw data
+data/warehouse.duckdb
+data/raw/*.csv
+
+# Generated artifacts
+artifacts/report.md
+artifacts/run_results_test.json
+artifacts/logs/

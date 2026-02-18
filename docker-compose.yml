@@ -1,0 +1,8 @@
+services:
+  pipeline:
+    build:
+      context: .
+    volumes:
+      - ./:/app
+    working_dir: /app
+    entrypoint: ["./scripts/ci.sh"]

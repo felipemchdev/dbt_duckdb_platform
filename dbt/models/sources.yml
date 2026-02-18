@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Synthetic raw ingestion schema loaded into DuckDB."
+    schema: raw
+    tables:
+      - name: raw_users
+        description: "Raw users generated during CI execution."
+        columns:
+          - name: user_id
+            description: "Primary key of the user in the source system."
+            tests:
+              - not_null
+              - unique
+          - name: email
+            description: "User email address."
+            tests:
+              - not_null
+          - name: created_at
+            description: "User creation timestamp."
+            tests:
+              - not_null
+          - name: country
+            description: "ISO-like country code used for segmentation."
+            tests:
+              - not_null
+
+      - name: raw_orders
+        description: "Raw e-commerce orders generated during CI execution."
+        columns:
+          - name: order_id
+            description: "Primary key of the order in the source system."
+            tests:
+              - not_null
+              - unique
+          - name: user_id
+            description: "Foreign key to the user placing the order."
+            tests:
+              - not_null
+          - name: amount
+            description: "Order amount in USD."
+            tests:
+              - not_null
+          - name: status
+            description: "Lifecycle status of the order."
+            tests:
+              - not_null
+          - name: created_at
+            description: "Order creation timestamp."
+            tests:
+              - not_null

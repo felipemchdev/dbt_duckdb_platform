@@ -1,0 +1,3 @@
+dbt-core~=1.10.0
+dbt-duckdb~=1.10.0
+duckdb~=1.4.0
