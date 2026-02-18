@@ -2,11 +2,11 @@
 
 ## English
 
-This project runs a full analytics pipeline with dbt + DuckDB in GitHub Actions.
-It generates synthetic data, loads raw tables, builds staging and mart models, runs tests, and generates docs.
+This project runs a complete analytics pipeline with dbt + DuckDB in GitHub Actions.
+It generates synthetic data, loads raw tables, builds staging and mart models, runs tests, and generates documentation.
 
-Synthetic data is deterministic: with the same seed, the same rows are generated.
-Freshness means how recent the data is. A freshness check validates if the latest timestamp is inside an expected time window.
+The synthetic data is repeatable: with the same seed, each run creates the same rows.
+Data update checks validate whether the latest timestamp is within an expected window.
 
 ### Architecture
 
@@ -59,17 +59,17 @@ requirements.txt
 
 ### Next steps
 
-1. Add freshness and anomaly tests for marts.
+1. Add data update and anomaly tests for marts.
 2. Add an incremental model with controlled backfill.
-3. Publish dbt docs as static site artifact.
+3. Publish dbt docs as a static site artifact.
 
-## Português
+## Portugues
 
 Este projeto executa um pipeline de dados completo com dbt + DuckDB no GitHub Actions.
-Ele gera dados sintéticos, carrega tabelas brutas, cria modelos de staging e marts, roda testes e gera documentação.
+Ele gera dados sinteticos, carrega tabelas brutas, cria modelos de staging e marts, roda testes e gera documentacao.
 
-Dados sintéticos determinísticos: com a mesma semente, os dados gerados são sempre os mesmos.
-Frescor dos dados: mede se a tabela está atualizada. O teste verifica se a data mais recente está dentro de um limite esperado.
+Os dados sinteticos sao repetiveis: com a mesma semente, toda execucao gera os mesmos registros.
+O teste de atualizacao verifica se a data mais recente da tabela esta dentro do limite esperado.
 
 ### Arquitetura
 
@@ -85,7 +85,7 @@ generate_data.py -> data/raw/*.csv -> load_duckdb.py -> data/warehouse.duckdb (r
 scripts/ci.sh
 ```
 
-### Como rodar só os testes
+### Como rodar so os testes
 
 ```bash
 dbt test --project-dir dbt --profiles-dir dbt
@@ -102,7 +102,7 @@ Finished running models and tests
 Test status: PASS
 ```
 
-### Estrutura do repositório
+### Estrutura do repositorio
 
 ```text
 .github/workflows/ci.yml
@@ -115,13 +115,13 @@ docker-compose.yml
 requirements.txt
 ```
 
-### Limitações
+### Limitacoes
 
-- Execução local exige ambiente Python/dbt compatível.
-- Os dados são sintéticos e simplificados.
+- Execucao local exige ambiente Python/dbt compativel.
+- Os dados sao sinteticos e simplificados.
 
-### Próximos passos
+### Proximos passos
 
-1. Adicionar teste de frescor e anomalia nos marts.
+1. Adicionar teste de atualizacao e anomalia nos marts.
 2. Incluir modelo incremental com backfill controlado.
-3. Publicar docs do dbt como site estático em artefato.
+3. Publicar docs do dbt como site estatico em artefato.
