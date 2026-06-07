@@ -1,4 +1,4 @@
-# analytics-platform-dbt
+# dbt_duckdb_platform
 
 ## English
 
